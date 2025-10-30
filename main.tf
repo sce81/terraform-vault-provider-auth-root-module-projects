@@ -1,12 +1,16 @@
-module "vault-auth" {
-  source = "github.com/sce81/terraform-aws-ecs-fargate-cluster/Terraform-Vault-Provider-Auth"
+module "vault-role" {
+  source = "/Users/simon.elliott/Documents/Code/New_Structure/Terraform_Modules/TFE/terraform-vault-provider-auth-roles"
 
-  vault_url             = var.vault_url
   jwt_backend_path      = var.jwt_backend_path
-  tfc_vault_audience    = var.tfc_vault_audience
-  tfc_organization_name = var.tfc_organization_name
-  tfc_project_name      = var.tfc_project_name
-  tfc_workspace_name    = var.tfc_workspace_name
-  vault_policy          = local.vault_policy
-  vault_namespace       = var.vault_namespace
+  role_name             = var.role_name
+  tfc_organization_name = data.tfe_organization.main.name
+  vault_policy          = local.role_policy
+  target_tfc_project    = var.target_tfc_project
+  //vault_url             = "https://vault-cluster-public-vault-485f7257.cbb919d0.z1.hashicorp.cloud:8200/"
 }
+
+
+//module "vault-variables" {
+//  source = "/Users/simon.elliott/Documents/Code/New_Structure/Terraform_Modules/TFE/terraform-tfe-variable-sets"
+//
+//}
