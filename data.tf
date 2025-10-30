@@ -1,6 +1,7 @@
 data "tfe_organization" "main" {
   name = var.organization
 }
+
 locals {
   role_policy = <<EOT
   # Allow a token to inspect its own metadata (TTL, policies, etc.) — read-only
