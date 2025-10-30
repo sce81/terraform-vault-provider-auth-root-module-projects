@@ -1,6 +1,7 @@
 variable "vault_url" {
   type        = string
   description = "URL relating to Vault"
+  default = null
 }
 variable "jwt_backend_path" {
   type        = string
@@ -17,8 +18,9 @@ variable "tfc_hostname" {
   default     = "app.terraform.io"
   description = "The hostname of the TFC or TFE instance you'd like to use with Vault"
 }
-variable "tfc_organization_name" {
+variable "organization" {
   type        = string
+  default     = "HashiCorp_TFC_Automation_Demo"
   description = "The name of your Terraform Cloud organization"
 }
 variable "tfc_project_name" {
@@ -39,5 +41,15 @@ variable "vault_policy" {
 variable "vault_namespace" {
   type        = string
   default     = "admin"
+  description = "Vault Namespace to create integration"
+}
+variable "vault_role_name" {
+  type        = string
+  default     = "changeme"
+  description = "Vault Namespace to create integration"
+}
+variable "target_tfc_project" {
+  type        = string
+  default     = "changeme"
   description = "Vault Namespace to create integration"
 }

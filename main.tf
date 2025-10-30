@@ -1,12 +1,16 @@
 module "vault-auth" {
-  source  = "github.com/sce81/Terraform-Vault-Provider-Auth"
+  source  = "git@github.com:sce81/terraform-vault-provider-auth-roles.git"
 
 
-  vault_url             = var.vault_url
   jwt_backend_path      = var.jwt_backend_path
-  tfc_vault_audience    = var.tfc_vault_audience
-  tfc_organization_name = var.tfc_organization_name
-  tfc_project_name      = var.tfc_project_name
-  tfc_workspace_name    = var.tfc_workspace_name
-  vault_policy          = local.vault_policy
+  role_name             = var.vault_role_name
+  tfc_organization_name = data.tfe_organization.main.name
+  vault_policy          = local.role_policy
+  target_tfc_project    = var.target_tfc_project
 }
+
+
+//module "vault-variables" {
+//  source = "/Users/simon.elliott/Documents/Code/New_Structure/Terraform_Modules/TFE/terraform-tfe-variable-sets"
+//
+//}
