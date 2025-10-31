@@ -34,7 +34,7 @@ locals {
     },
     TFC_VAULT_RUN_ROLE = {
       key         = "TFC_VAULT_RUN_ROLE"
-      value       = var.tfc_vault_run_role
+      value       = var.vault_role_name
       description = "Instruct the Workspace to leverage this Vault Role"
       category    = "env"
     },
