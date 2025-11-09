@@ -1,5 +1,5 @@
 module "vault-auth" {
-  source = "git@github.com:sce81/terraform-vault-provider-auth-roles.git"
+  source = "app.terraform.io/HashiCorp_AWS_Org/vault-provider-auth-roles/vault"
   jwt_backend_path      = var.jwt_backend_path
   role_name             = var.vault_role_name
   tfc_organization_name = data.tfe_organization.main.name
@@ -9,7 +9,7 @@ module "vault-auth" {
 
 
 module "vault-variables" {
-  source = "git@github.com:sce81/terraform-tfe-variable-sets"
+  source = "app.terraform.io/HashiCorp_AWS_Org/tfe-variable-sets/tfe"
 
   var_set_variables     = local.variables
   set_name              = "Vault Auth: ${var.target_tfc_project}"
