@@ -1,5 +1,5 @@
 module "vault-auth" {
-  source = "app.terraform.io/HashiCorp_AWS_Org/vault-provider-auth-roles/vault"
+  source                = "app.terraform.io/HashiCorp_AWS_Org/vault-provider-auth-roles/vault"
   jwt_backend_path      = var.jwt_backend_path
   role_name             = var.vault_role_name
   tfc_organization_name = data.tfe_organization.main.name
