@@ -11,8 +11,11 @@ terraform {
   cloud {
     organization = "HashiCorp_AWS_Org"
     workspaces {
-      name    = "hcp_workspace_vault_provider_auth_cloud-security-non-production"
-      project = "workspace-management-vault"
+      project = "vault-admin"
+      tags = {
+        "owner" = "vault-team",
+        "env"   = "vault-configuration"
+      }
     }
   }
   required_providers {
