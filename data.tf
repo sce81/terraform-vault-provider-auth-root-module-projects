@@ -53,48 +53,50 @@ locals {
 # Self-management permissions
 ########################################
 
-# Allow the token to view details about itself (e.g. TTL, policies, metadata)
 path "auth/token/lookup-self" {
   capabilities = ["read"]
 }
 
-# Allow the token to renew its own lease before expiry
 path "auth/token/renew-self" {
   capabilities = ["update"]
 }
 
-# Allow the token to revoke itself and become invalid
 path "auth/token/revoke-self" {
   capabilities = ["update"]
 }
 
+########################################
+# AWS Auth Engine Management
+########################################
+
+path "auth/aws/*" {
+  capabilities = ["create", "read", "update", "list", "delete"]
+}
 
 ########################################
-# ACL policy management
+# ACL Policy Management
 ########################################
 
-# Allow reading policies (no creation or deletion — prevents privilege escalation)
 path "sys/policies/acl/*" {
   capabilities = ["create", "read", "update", "list", "delete"]
 }
 
-# Allow the same in a single child namespace
 path "/+/sys/policies/acl/*" {
   capabilities = ["create", "read", "update", "list", "delete"]
 }
 
-
 ########################################
-# JWT auth method management
+# JWT Auth Method Management
 ########################################
 
-# Allow managing JWT auth mount at current namespace (create + inspect + tune)
+# Current namespace mounts
 path "sys/mounts/auth/jwt" {
   capabilities = ["create", "read", "update", "list"]
 }
 path "sys/mounts/auth/jwt" {
   capabilities = ["create", "read", "update", "list"]
 }
+
 path "sys/mounts/auth/jwt/*" {
   capabilities = ["create", "read", "update", "list"]
 }
@@ -102,7 +104,7 @@ path "sys/mounts/auth/jwt/*" {
   capabilities = ["create", "read", "update", "list"]
 }
 
-# Allow managing JWT auth mount one namespace down
+# One namespace down
 path "/+/sys/mounts/auth/jwt" {
   capabilities = ["create", "read", "update", "list"]
 }
@@ -110,60 +112,96 @@ path "/+/sys/mounts/auth/jwt/*" {
   capabilities = ["create", "read", "update", "list"]
 }
 
-# Retain legacy sys/auth endpoints (read-only for visibility)
+# Legacy JWT sys/auth endpoints
 path "sys/auth/jwt" {
   capabilities = ["create", "read", "update", "delete", "list", "sudo"]
 }
+
 path "/+/sys/auth/jwt" {
   capabilities = ["create", "read", "update", "delete", "list", "sudo"]
 }
 
-# Allow reading and updating JWT auth configuration
+# JWT config
 path "auth/jwt/config" {
   capabilities = ["read", "update"]
 }
 
-# Allow reading and updating JWT auth configuration one namespace down
 path "/+/auth/jwt/config" {
   capabilities = ["read", "update"]
 }
 
-# Allow full lifecycle management of JWT roles (create + manage + list)
+# JWT roles
 path "auth/jwt/role/*" {
   capabilities = ["create", "read", "update", "delete", "list"]
 }
 
-# Allow full lifecycle management of JWT roles one namespace down
 path "/+/auth/jwt/role/*" {
   capabilities = ["create", "read", "update", "delete", "list"]
 }
 
-
 ########################################
-# Secrets engine access
+# Secrets Engine Access
 ########################################
 
-# Allow read-only access to secrets under "secret/"
+# Read-only access to classic secret/
 path "secret/*" {
   capabilities = ["read"]
 }
 
+# ------------------------------
+# KV v2 - Added section
+# ------------------------------
 
+# Read/write data values
+path "kvv2/data/*" {
+  capabilities = ["create", "read", "update", "delete"]
+}
+
+# Read/manage metadata (list keys, set custom metadata)
+path "kvv2/metadata/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+
+# Soft-delete versions
+path "kvv2/delete/*" {
+  capabilities = ["update"]
+}
+
+# Undelete soft-deleted versions
+path "kvv2/undelete/*" {
+  capabilities = ["update"]
+}
+
+# Permanently destroy versions
+path "kvv2/destroy/*" {
+  capabilities = ["update"]
+}
+
+# ------------------------------
+
+# Manage all secrets engine mounts
+path "sys/mounts/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
 ########################################
-# Namespace management
+# Sync Destinations Management
 ########################################
 
-# Restrict namespace management to read-only — prevent accidental deletion
+path "sys/sync/destinations/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+########################################
+# Namespace Management
+########################################
+
 path "sys/namespaces/*" {
   capabilities = ["create", "read", "update", "list", "delete"]
 }
 
-# Allow creation of *one* child namespace (needed for JWT one level down)
 path "/+/sys/namespaces/*" {
   capabilities = ["create", "read", "update", "list", "delete"]
 }
 
-# Allow read-only visibility two levels down
 path "/+/+/sys/namespaces/*" {
   capabilities = ["create", "read", "update", "list", "delete"]
 }
